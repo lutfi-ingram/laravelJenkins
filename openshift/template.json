@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "template.openshift.io/v1",
     "metadata": {
-        "name": "php-laravel",
+        "name": "php-laravel-2",
         "creationTimestamp": "2022-02-16T15:00:00+07:00",
         "annotations": {
             "description": "An example Laravel (PHP) application with a SQLite database. For more information about using this template, including OpenShift considerations, see https://github.com/luciddreamz/laravel-ex/blob/master/readme.md.\n\nWARNING: Any data stored will be lost upon pod destruction. Only use this template for testing.",
