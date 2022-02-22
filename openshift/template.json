@@ -192,7 +192,7 @@
                                     "initialDelaySeconds": 30,
                                     "timeoutSeconds": 3
                                 },
-                                "name": "laravel-sqlite-service",
+                                "name": "laravel-demo-service",
                                 "ports": [
                                     {
                                         "containerPort": 8080
@@ -248,7 +248,7 @@
             "name": "NAMESPACE",
             "displayName": "Namespace",
             "description": "The OpenShift Namespace where the ImageStream resides.",
-            "value": "openshift",
+            "value": "demo1",
             "required": true
         },
         {
