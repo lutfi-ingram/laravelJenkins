@@ -136,7 +136,7 @@
                                 "command": [
                                     "./migrate-database.sh"
                                 ],
-                                "containerName": "laravel-sqlite"
+                                "containerName": "laravel-demo"
                             },
                             "failurePolicy": "Retry"
                         }
@@ -192,7 +192,7 @@
                                     "initialDelaySeconds": 30,
                                     "timeoutSeconds": 3
                                 },
-                                "name": "laravel-sqlite",
+                                "name": "laravel-sqlite-service",
                                 "ports": [
                                     {
                                         "containerPort": 8080
@@ -220,7 +220,7 @@
                         "imageChangeParams": {
                             "automatic": true,
                             "containerNames": [
-                                "laravel-sqlite"
+                                "laravel-demo"
                             ],
                             "from": {
                                 "kind": "ImageStreamTag",
@@ -241,7 +241,7 @@
             "name": "NAME",
             "displayName": "Name",
             "description": "The name assigned to all of the frontend objects defined in this template.",
-            "value": "laravel-sqlite",
+            "value": "laravel-demo",
             "required": true
         },
         {
@@ -349,6 +349,6 @@
         }
     ],
     "labels": {
-        "template": "laravel-sqlite"
+        "template": "laravel-demo"
     }
 }

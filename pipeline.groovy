@@ -1,27 +1,59 @@
+/* groovylint-disable-next-line CompileStatic */
 pipeline {
     agent any
+    triggers {
+        pollSCM '*/1 * * * *'
+    }
 
     stages {
-        stage('Hello') {
+        stage('Checkout') {
             steps {
-                echo 'Hello World'
+                checkout scm: [ 
+                    $class: 'GitSCM',
+                    userRemoteConfigs: [[url: 'https://github.com/lutfi-ingram/laravelJenkins.git']],
+                    branches: [[name: 'refs/heads/master']]
+                ], poll: true
             }
         }
-    }
-    stages {
-        stage('Deploy'){
+        stage('Create Template') {
             steps {
-                openshift.withCluster( 'devocpcluster' ) {
-                    echo "Hello from ${openshift.cluster()}'s default project: ${openshift.project()}"
-                
-                    // But we can easily change project contexts
-                    openshift.withProject( 'another-project' ) {
-                        echo "Hello from a non-default project: ${openshift.project()}"
+                script {
+                    def templateSelector = openshift.selector('template', ${ params.TEMPLATE })
+                    def templateExists = templateSelector.exists()
+                    def template
+                    if (!templateExists) {
+                        template = openshift.create('https://raw.githubusercontent.com/lutfi-ingram/laravelJenkins/master/openshift/template.json').object()
+                } else {
+                        template = templateSelector.object()
                     }
-                
-                    // And even scope operations to other clusters within the same script
-                    openshift.withCluster( 'myothercluster' ) {
-                        echo "Hello from ${openshift.cluster()}'s default project: ${openshift.project()}"
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                script {
+                    openshift.withCluster( 'devocpcluster' ) {
+                        def bc = openshift.selector( "bc/${params.BC_NAME}" )
+                        def result = bc.startBuild('--follow=true')
+                        timeout(10) {
+                            result.logs('-f')
+                        }
+                    }
+                }
+            }
+        }
+        stage('Rollout') {
+            steps {
+                script {
+                    openshift.withCluster( 'devocpcluster' ) {
+                        def dc = openshift.selector( "dc/${params.APPLICATION}" )
+                        try {
+                            def rollout = dc.rollout()
+                            def resultRollout = rollout.latest()
+                            resultRollout.logs('-f')
+                    } catch (Exception ex) {
+                            println(ex.getMessage())
+                        }
                     }
                 }
             }
