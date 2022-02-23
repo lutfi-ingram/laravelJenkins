@@ -3,9 +3,9 @@ pipeline {
     triggers {
         pollSCM '*/1 * * * *'
     }
-    environment {
-        APPEXIST = 'no'
-    }
+    // environment {
+    //     APPEXIST = 'no'
+    // }
     stages {
         stage('Checkout') {
             steps {
@@ -25,11 +25,11 @@ pipeline {
                             timeout(1) {
                                 created.logs('-f')
                             }
+                            sh 'echo no > variable2022_0001.txt'
                         } catch (Exception ex) {
                             println(ex.getMessage())
                             println('writing amazing')
-                            tmp_param = sh(script: 'yes', returnStdout: true).trim()
-                            env.APPEXIST = tmp_param
+                            sh 'echo yes > variable2022_0001.txt'
                         }
                     }
                 }
@@ -39,9 +39,9 @@ pipeline {
             steps {
                 script {
                     openshift.withCluster() {
-                        println("ada apa")
-                        println(env.APPEXIST)
-                        if (env.APPEXIST == 'yes'){
+                        def APPEXIST = readFile('variable2022_0001.txt').trim()
+                        println(APPEXIST)
+                        if (APPEXIST == 'yes'){
                             def bc = openshift.selector( "bc/${params.BC_NAME}" )
                             def result = bc.startBuild()
                             timeout(10) {
