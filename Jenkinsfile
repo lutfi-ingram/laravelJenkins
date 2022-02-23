@@ -36,8 +36,10 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    openshift.withCluster() {                        
-                        if( env.APPEXIST == 'yes' ){
+                    openshift.withCluster() {
+                        println("ada apa")
+                        println(env.APPEXIST)
+                        if (env.APPEXIST == 'yes'){
                             def bc = openshift.selector( "bc/${params.BC_NAME}" )
                             def result = bc.startBuild()
                             timeout(10) {
