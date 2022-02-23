@@ -137,7 +137,7 @@
                                 "command": [
                                     "./migrate-database.sh"
                                 ],
-                                "containerName": "laravel-demo"
+                                "containerName": "${NAME}"
                             },
                             "failurePolicy": "Retry"
                         }
