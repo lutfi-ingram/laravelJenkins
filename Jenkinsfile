@@ -27,7 +27,7 @@ pipeline {
                             }
                         } catch (Exception ex) {
                             println(ex.getMessage())
-                            env.APPEXIST = 'yes'                          
+                            env.APPEXIST = 'yes'
                         }
                     }
                 }
