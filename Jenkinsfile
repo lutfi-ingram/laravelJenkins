@@ -19,7 +19,7 @@ pipeline {
                 script {
                     openshift.withCluster() {
                         try {
-                            def created = openshift.newApp( 'openshift/templates.json' )
+                            def created = openshift.newApp( 'templates.json' )
                         } catch (Exception ex) {
                             println(ex.getMessage())
                         }
