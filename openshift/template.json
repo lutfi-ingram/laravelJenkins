@@ -150,7 +150,7 @@
                         "imageChangeParams": {
                             "automatic": true,
                             "containerNames": [
-                                "laravel-demo"
+                                "${NAME}"
                             ],
                             "from": {
                                 "kind": "ImageStreamTag",
