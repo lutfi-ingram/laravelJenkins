@@ -13,7 +13,8 @@
     },
     "message": "The following service(s) have been created in your project: ${NAME}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/luciddreamz/laravel-ex/blob/master/readme.md.",
     "labels": {
-        "template": "laravel-demo"
+        "template": "laravel-demo",
+        "app": "laravel-demo"
     },
     "objects": [
         {
