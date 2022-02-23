@@ -202,10 +202,6 @@
                                 },
                                 "env": [
                                     {
-                                        "name": "CLUSTER_NAME",
-                                        "value": "${CLUSTER_NAME}"
-                                    },
-                                    {
                                         "name": "ROUTER_SHARD",
                                         "value": "${ROUTER_SHARD}"
                                     },
@@ -301,13 +297,6 @@
             "name": "COMPOSER_MIRROR",
             "displayName": "Custom Composer Mirror URL",
             "description": "The custom Composer mirror URL"
-        },
-        {
-            "name": "CLUSTER_NAME",
-            "displayName": "Cluster Name",
-            "description": "The name of your current OpenShift cluster (console.CLUSTER_NAME.openshift.com).",
-            "value": "preview",
-            "required": true
         },
         {
             "name": "ROUTER_SHARD",
