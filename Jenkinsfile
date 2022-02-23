@@ -3,10 +3,7 @@ pipeline {
     triggers {
         pollSCM '*/1 * * * *'
     }
-    parameters {
-        string(name: 'app_exist', defaultValue: 'no')
-    }
-
+    def String appExist = 'no'
     stages {
         stage('Checkout') {
             steps {
@@ -23,12 +20,12 @@ pipeline {
                     openshift.withCluster() {
                         try {
                             def created = openshift.newApp( 'openshift/template.json', "-p", "NAME=${params.APPLICATION}"  )
-                            timeout(10) {
+                            timeout(1) {
                                 created.logs('-f')
                             }
                         } catch (Exception ex) {
                             println(ex.getMessage())
-                            env.app_exist =  sh (script: 'yes', returnStdout: true).trim()                            
+                            appExist =  sh(script: 'yes', returnStdout: true)                           
                         }
                     }
                 }
@@ -38,7 +35,7 @@ pipeline {
             steps {
                 script {
                     openshift.withCluster() {                        
-                        if( "${env.app_exist}" == "yes" ){
+                        if( "${appExist}" == "yes" ){
                             def bc = openshift.selector( "bc/${params.BC_NAME}" )
                             def result = bc.startBuild()
                             timeout(10) {
