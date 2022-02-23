@@ -9,7 +9,7 @@ pipeline {
             steps {
                 checkout scm: [ 
                     $class: 'GitSCM',
-                    userRemoteConfigs: [[url: 'https://github.com/lutfi-ingram/cakephp-ex.git']],
+                    userRemoteConfigs: [[url: 'https://github.com/lutfi-ingram/laravelJenkins.git']],
                     branches: [[name: 'refs/heads/master']]
                 ], poll: true
             }
