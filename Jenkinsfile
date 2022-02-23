@@ -3,6 +3,9 @@ pipeline {
     triggers {
         pollSCM '*/1 * * * *'
     }
+    parameters {
+        string(name: 'app_exist', defaultValue: 'no')
+    }
 
     stages {
         stage('Checkout') {
@@ -19,9 +22,13 @@ pipeline {
                 script {
                     openshift.withCluster() {
                         try {
-                            def created = openshift.newApp( 'openshift/template.json', "-p", "NAME=${params.BC_NAME}"  )
+                            def created = openshift.newApp( 'openshift/template.json', "-p", "NAME=${params.APPLICATION}"  )
+                            timeout(10) {
+                                created.logs('-f')
+                            }
                         } catch (Exception ex) {
                             println(ex.getMessage())
+                            env.app_exist =  sh (script: 'yes', returnStdout: true).trim()                            
                         }
                     }
                 }
@@ -30,11 +37,13 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    openshift.withCluster() {
-                        def bc = openshift.selector( "bc/${params.BC_NAME}" )
-                        def result = bc.startBuild()
-                        timeout(10) {
-                            result.logs('-f')
+                    openshift.withCluster() {                        
+                        if( "${env.app_exist}" == "yes" ){
+                            def bc = openshift.selector( "bc/${params.BC_NAME}" )
+                            def result = bc.startBuild()
+                            timeout(10) {
+                                result.logs('-f')
+                            }
                         }
                     }
                 }
