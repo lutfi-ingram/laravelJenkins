@@ -21,10 +21,7 @@ pipeline {
                 script {
                     openshift.withCluster() {
                         try {
-                            def created = openshift.newApp( 'openshift/template.json', "-p", "NAME=${params.APPLICATION}"  )
-                            timeout(1) {
-                                created.logs('-f')
-                            }
+                            def created = openshift.newApp( 'openshift/template.json', "-p", "NAME=${params.APPLICATION}"  )                            
                             sh 'echo no > variable2022_0001.txt'
                         } catch (Exception ex) {
                             println(ex.getMessage())
