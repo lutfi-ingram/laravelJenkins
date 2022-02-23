@@ -3,8 +3,9 @@ pipeline {
     triggers {
         pollSCM '*/1 * * * *'
     }
-    def String appExist = 'no'
+    
     stages {
+        def String appExist = 'no'
         stage('Checkout') {
             steps {
                 checkout scm: [ 
