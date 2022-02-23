@@ -56,7 +56,6 @@ pipeline {
                         try {
                             def rollout = dc.rollout()
                             def resultRollout = rollout.latest()
-                            resultRollout.logs('-f')
                     } catch (Exception ex) {
                             println(ex.getMessage())
                         }
