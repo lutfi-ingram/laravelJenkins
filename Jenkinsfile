@@ -27,7 +27,9 @@ pipeline {
                             }
                         } catch (Exception ex) {
                             println(ex.getMessage())
-                            env.APPEXIST = 'yes'
+                            println('writing amazing')
+                            tmp_param = sh(script: 'yes', returnStdout: true).trim()
+                            env.APPEXIST = tmp_param
                         }
                     }
                 }
