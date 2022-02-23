@@ -12,6 +12,9 @@
         }
     },
     "message": "The following service(s) have been created in your project: ${NAME}.\n\nFor more information about using this template, including OpenShift considerations, see https://github.com/luciddreamz/laravel-ex/blob/master/readme.md.",
+    "labels": {
+        "template": "laravel-demo"
+    },
     "objects": [
         {
             "apiVersion": "v1",
@@ -64,17 +67,12 @@
             "kind": "BuildConfig",
             "metadata": {
                 "annotations": {
-                    "description": "Defines how to build the application"
+                    "description": "Defines how to build the application",
+                    "template.alpha.openshift.io/wait-for-ready": "true"
                 },
                 "name": "${NAME}"
             },
             "spec": {
-                "output": {
-                    "to": {
-                        "kind": "ImageStreamTag",
-                        "name": "${NAME}:latest"
-                    }
-                },
                 "source": {
                     "contextDir": "${CONTEXT_DIR}",
                     "git": {
@@ -99,6 +97,12 @@
                     },
                     "type": "Source"
                 },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "${NAME}:latest"
+                    }
+                },
                 "triggers": [
                     {
                         "type": "ImageChange"
@@ -120,7 +124,8 @@
             "kind": "DeploymentConfig",
             "metadata": {
                 "annotations": {
-                    "description": "Defines how to deploy the application server"
+                    "description": "Defines how to deploy the application server",
+                    "template.alpha.openshift.io/wait-for-ready": "true"
                 },
                 "name": "${NAME}"
             },
@@ -347,8 +352,5 @@
             "generate": "expression",
             "from": "[\\w]{32}"
         }
-    ],
-    "labels": {
-        "template": "laravel-demo"
-    }
+    ]
 }
