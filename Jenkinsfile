@@ -57,7 +57,7 @@ pipeline {
                             def dc = openshift.selector( "dc/${params.APPLICATION}" )
                             try {
                                 def rollout = dc.rollout()
-                                def rollout.latest()
+                                rollout.latest()
                             } catch (Exception ex) {
                                 println(ex.getMessage())
                             }
