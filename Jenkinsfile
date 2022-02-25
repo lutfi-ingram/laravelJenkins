@@ -39,7 +39,7 @@ pipeline {
                         def APPEXIST = readFile('variable2022_0001.txt').trim()
                         println(APPEXIST)
                         if (APPEXIST == 'yes'){
-                            def bc = openshift.selector( "bc/${params.BC_NAME}" )
+                            def bc = openshift.selector( "bc/${params.APPLICATION}" )
                             def result = bc.startBuild()
                             timeout(10) {
                                 result.logs('-f')
