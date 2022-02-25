@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout scm: [ 
+                checkout scm: [
                     $class: 'GitSCM',
                     userRemoteConfigs: [[url: 'https://github.com/lutfi-ingram/laravelJenkins.git']],
                     branches: [[name: 'refs/heads/master']]
@@ -21,11 +21,10 @@ pipeline {
                 script {
                     openshift.withCluster() {
                         try {
-                            openshift.newApp( 'openshift/template.json', "-p", "NAME=${params.APPLICATION}"  )                            
+                            openshift.newApp( 'openshift/template.json', "-p", "NAME=${params.APPLICATION}"  )
                             sh 'echo no > variable2022_0001.txt'
                         } catch (Exception ex) {
                             println(ex.getMessage())
-                            println('writing amazing')
                             sh 'echo yes > variable2022_0001.txt'
                         }
                     }
@@ -52,13 +51,16 @@ pipeline {
         stage('Rollout') {
             steps {
                 script {
-                    openshift.withCluster() {
-                        def dc = openshift.selector( "dc/${params.APPLICATION}" )
-                        try {
-                            def rollout = dc.rollout()
-                            def resultRollout = rollout.latest()
-                    } catch (Exception ex) {
-                            println(ex.getMessage())
+                    def APPEXIST = readFile('variable2022_0001.txt').trim()
+                    if (APPEXIST == 'yes'){
+                        openshift.withCluster() {
+                            def dc = openshift.selector( "dc/${params.APPLICATION}" )
+                            try {
+                                def rollout = dc.rollout()
+                                def rollout.latest()
+                            } catch (Exception ex) {
+                                println(ex.getMessage())
+                            }
                         }
                     }
                 }
