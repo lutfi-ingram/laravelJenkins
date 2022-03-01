@@ -136,7 +136,7 @@
                         "intervalSeconds": 1,
                         "timeoutSeconds": 120, 
                         "maxSurge": "20%", 
-                        "maxUnavailable": "10%", 
+                        "maxUnavailable": "50%", 
                         "pre": {
                             "execNewPod": {
                                 "command": [
