@@ -131,7 +131,12 @@
             },
             "spec": {
                 "strategy": {
-                    "recreateParams": {
+                    "rollingParams":{
+                        "updatePeriodSeconds": 1, 
+                        "intervalSeconds": 1,
+                        "timeoutSeconds": 120, 
+                        "maxSurge": "20%", 
+                        "maxUnavailable": "10%", 
                         "pre": {
                             "execNewPod": {
                                 "command": [
@@ -140,9 +145,9 @@
                                 "containerName": "${NAME}"
                             },
                             "failurePolicy": "Retry"
-                        }
-                    },
-                    "type": "Recreate"
+                        } 
+                    },                    
+                    "type": "Rolling"
                 },
                 
                 "triggers": [
