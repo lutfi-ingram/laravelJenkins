@@ -11,7 +11,7 @@ pipeline {
             steps {
                 checkout scm: [
                     $class: 'GitSCM',
-                    userRemoteConfigs: [[url: 'https://github.com/lutfi-ingram/laravelJenkins.git']],
+                    userRemoteConfigs: [[url: "${params.REPOSITORY_URL}"]],
                     branches: [[name: 'refs/heads/master']]
                 ], poll: true
             }
@@ -21,7 +21,7 @@ pipeline {
                 script {
                     openshift.withCluster() {
                         try {
-                            openshift.newApp( 'openshift/template.json', "-p", "NAME=${params.APPLICATION}"  )
+                            openshift.newApp( 'openshift/template.json', "-p", "NAME=${params.APPLICATION}","-p","SOURCE_REPOSITORY_URL=${params.REPOSITORY_URL}"  )
                             sh 'echo no > variable2022_0001.txt'
                         } catch (Exception ex) {
                             println(ex.getMessage())
