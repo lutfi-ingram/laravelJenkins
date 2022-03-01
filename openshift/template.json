@@ -131,6 +131,7 @@
             },
             "spec": {
                 "strategy": {
+                    "type": "Rolling",
                     "rollingParams":{
                         "updatePeriodSeconds": 1, 
                         "intervalSeconds": 1,
@@ -146,8 +147,7 @@
                             },
                             "failurePolicy": "Retry"
                         } 
-                    },                    
-                    "type": "Rolling"
+                    }    
                 },
                 
                 "triggers": [

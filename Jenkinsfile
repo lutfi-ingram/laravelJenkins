@@ -60,6 +60,7 @@ pipeline {
                                 rollout.latest()
                             } catch (Exception ex) {
                                 println(ex.getMessage())
+                                dc.logs('-f')
                             }
                         }
                     }
