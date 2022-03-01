@@ -23,6 +23,8 @@ pipeline {
                         try {
                             openshift.newApp( 'openshift/template.json', "-p", "NAME=${params.APPLICATION}","-p","SOURCE_REPOSITORY_URL=${params.REPOSITORY_URL}"  )
                             sh 'echo no > variable2022_0001.txt'
+                            def dc = openshift.selector( "dc/${params.APPLICATION}" )
+                            dc.logs('-f')
                         } catch (Exception ex) {
                             println(ex.getMessage())
                             sh 'echo yes > variable2022_0001.txt'
